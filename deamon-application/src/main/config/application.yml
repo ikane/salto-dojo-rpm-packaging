@@ -1,0 +1,8 @@
+logging.level:
+ org.springframework: ERROR
+
+spring:
+ application:
+  name: Hello World Daemon
+ main:
+  show_banner: false

@@ -1,0 +1,10 @@
+logging.level:
+ org.springframework: ERROR
+ org.springframework.web: INFO
+
+spring:
+ application:
+  name: Hello World
+ main:
+  show_banner: false
+ output.ansi.enabled: ALWAYS

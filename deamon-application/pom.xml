@@ -1,0 +1,277 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.saltoconsulting.dojo</groupId>
+		<artifactId>salto-dojo-rpm-packaging</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>deamon-application</artifactId>
+	<name>daemon-application</name>
+	<description>Exemple de packaging pour un démon</description>
+	
+	<properties>
+		<app.name>hello-daemon</app.name>
+		<app.install.dir>${prefix.dir}/daemon</app.install.dir>
+		<app.config.dir>${app.install.dir}/config</app.config.dir>
+		<app.bin.dir>${app.install.dir}/bin</app.bin.dir>
+		<app.log.dir>${app.install.dir}/logs</app.log.dir>
+		<app.lib.dir>${app.install.dir}/lib</app.lib.dir>
+		<daemon.chkconfig>345 88 12</daemon.chkconfig>
+		<appassembler.output.dir>${project.build.directory}/generated-resources/appassembler/jsw/hello-daemon</appassembler.output.dir>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>rpm</id>
+			<build>
+				<plugins>
+					<!-- We do not use the spring boot plugin since we will add wrapper 
+						library in the classpath -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.6</version>
+						<configuration>
+							<delimiters>
+								<delimiter>@</delimiter>
+							</delimiters>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>appassembler-maven-plugin</artifactId>
+						<configuration>
+							<useWildcardClassPath>true</useWildcardClassPath>
+							<repositoryLayout>flat</repositoryLayout>
+							<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+							<configurationDirectory>config</configurationDirectory>
+							<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+							<repositoryName>lib</repositoryName>
+							<repositoryLayout>flat</repositoryLayout>
+							<defaultJvmSettings>
+								<initialMemorySize>64M</initialMemorySize>
+								<maxMemorySize>128M</maxMemorySize>
+								<extraArguments>
+									<extraArgument>-server</extraArgument>
+									<extraArgument>-XX:+HeapDumpOnOutOfMemoryError</extraArgument>
+									<extraArgument>-XX:HeapDumpPath=${daemon.log.dir}</extraArgument>
+								</extraArguments>
+							</defaultJvmSettings>
+
+							<daemons>
+								<daemon>
+									<id>${app.name}</id>
+									<mainClass>com.saltoconsulting.dojo.deamon.HelloWorldWebApplication</mainClass>
+									<platforms>
+										<platform>jsw</platform>
+									</platforms>
+									<generatorConfigurations>
+										<generatorConfiguration>
+											<generator>jsw</generator>
+											<includes>
+												<include>linux-x86-64</include>
+											</includes>
+											<configuration>
+												<property>
+													<name>wrapper.displayname</name>
+													<value>hello world daemon</value>
+												</property>
+												<property>
+													<name>wrapper.working.dir</name>
+													<value>${app.install.dir}</value>
+												</property>
+												<property>
+													<name>wrapper.logfile</name>
+													<value>${app.log.dir}/${app.name}.log</value>
+												</property>
+												<property>
+													<name>wrapper.pidfile</name>
+													<value>${app.log.dir}</value>
+												</property>
+												<property>
+													<name>wrapper.logfile.maxsize</name>
+													<value>10m</value>
+												</property>
+												<property>
+													<name>wrapper.logfile.loglevel</name>
+													<value>INFO</value>
+												</property>
+												<property>
+													<name>wrapper.logfile.maxfiles</name>
+													<value>5</value>
+												</property>
+												<property>
+													<name>run.as.user.envvar</name>
+													<value>${app.usr}</value>
+												</property>
+											</configuration>
+										</generatorConfiguration>
+									</generatorConfigurations>
+								</daemon>
+							</daemons>
+						</configuration>
+						<executions>
+							<execution>
+								<id>generate-jsw-scripts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>generate-daemons</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>rpm-maven-plugin</artifactId>
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>rpm</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<name>hello-world-daemon</name>
+							<copyright>SALTO Consulting</copyright>
+							<distribution>SALTO Consulting</distribution>
+							<group>Applications/Programming</group>
+							<packager>Quentin Vandekerckhove</packager>
+							<!-- do not use x86_64 if your JVM is a 32 bits version -->
+							<needarch>x86_64</needarch>
+							<requires>
+								<require><![CDATA[ java >= 1.7.0 ]]></require>
+							</requires>
+							<preinstallScriptlet>
+								<script>
+									<![CDATA[
+if ! id -u ${app.usr} > /dev/null 2>&1
+then
+		useradd ${app.usr}
+		echo ${app.usr} | passwd --stdin ${app.usr}
+fi
+									]]>
+								</script>
+							</preinstallScriptlet>
+							<mappings>
+								<mapping>
+									<directory>${app.install.dir}/bin</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>755</filemode>
+									<sources>
+										<source>
+											<location>${appassembler.output.dir}/bin/${app.name}</location>
+										</source>
+										<source>
+											<location>${appassembler.output.dir}/bin/wrapper-linux-x86-64</location>
+										</source>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>/etc/init.d</directory>
+									<username>root</username>
+									<groupname>root</groupname>
+									<filemode>755</filemode>
+									<sources>
+										<softlinkSource>
+											<location>${app.install.dir}/bin/${app.name}</location>
+										</softlinkSource>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>${app.install.dir}/config</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>640</filemode>
+									<sources>
+										<source>
+											<location>src/main/config</location>
+										</source>
+										<source>
+											<location>${appassembler.output.dir}/config</location>
+										</source>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>${app.install.dir}/lib</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>640</filemode>
+									<dependency />
+									<artifact />
+									<sources>
+										<source>
+											<location>${appassembler.output.dir}/lib/wrapper.jar</location>
+										</source>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>${app.install.dir}/lib</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>750</filemode>
+									<sources>
+										<source>
+											<location>${appassembler.output.dir}/lib/libwrapper-linux-x86-64.so</location>
+										</source>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>${app.install.dir}/lib</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>750</filemode>
+								</mapping>
+								<mapping>
+									<directory>${app.install.dir}/config</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>750</filemode>
+								</mapping>
+								<mapping>
+									<directory>${app.log.dir}</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>750</filemode>
+								</mapping>
+							</mappings>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

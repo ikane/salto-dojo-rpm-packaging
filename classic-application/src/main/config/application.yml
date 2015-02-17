@@ -1,0 +1,11 @@
+who: World
+
+logging.level:
+ org.springframework: ERROR
+
+spring:
+ application:
+  name: Hello World App
+ main:
+  show_banner: false
+

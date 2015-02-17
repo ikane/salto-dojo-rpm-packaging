@@ -1,0 +1,10 @@
+who: World
+
+logging.level:
+ org.springframework: ERROR
+
+spring:
+ application:
+  name: Hello World Batch
+ main:
+  show_banner: false

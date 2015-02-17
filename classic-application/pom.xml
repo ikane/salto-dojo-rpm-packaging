@@ -1,0 +1,202 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.saltoconsulting.dojo</groupId>
+		<artifactId>salto-dojo-rpm-packaging</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>classic-application</artifactId>
+	<name>classic-application</name>
+	<description>Exemple d'une application java classique</description>
+
+	<properties>
+		<app.name>hello</app.name>
+		<app.install.dir>${prefix.dir}/app</app.install.dir>
+		<app.config.dir>${app.install.dir}/config</app.config.dir>
+		<app.bin.dir>${app.install.dir}/bin</app.bin.dir>
+		<app.log.dir>${app.install.dir}/logs</app.log.dir>
+		<app.lib.dir>${app.install.dir}/lib</app.lib.dir>
+	</properties>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>rpm</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>appassembler-maven-plugin</artifactId>
+						<configuration>
+							<!-- Set the target configuration directory to be used in the bin 
+								scripts -->
+							<configurationDirectory>config</configurationDirectory>
+							<!-- Copy the contents from "/src/main/config" to the target configuration 
+								directory in the assembled application -->
+							<copyConfigurationDirectory>true</copyConfigurationDirectory>
+							<!-- Include the target configuration directory in the beginning of 
+								the classpath declaration in the bin scripts -->
+							<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+							<!-- set alternative assemble directory -->
+							<assembleDirectory>${appassembler.output.dir}</assembleDirectory>
+							<!-- Extra JVM arguments that will be included in the bin scripts -->
+							<extraJvmArguments>-Xmx128m</extraJvmArguments>
+							<repositoryName>lib</repositoryName>
+							<repositoryLayout>flat</repositoryLayout>
+
+							<!-- Generate bin scripts for windows and unix pr default -->
+							<platforms>
+								<platform>unix</platform>
+							</platforms>
+							<programs>
+								<program>
+									<id>${app.name}</id>
+									<mainClass>com.saltoconsulting.dojo.app.HelloWorldApplication</mainClass>
+									<commandLineArguments>
+										<commandLineArgument>--spring.config.location=file:${app.config.dir}</commandLineArgument>
+									</commandLineArguments>
+
+									<!-- Only generate unix shell script for this application -->
+									<platforms>
+										<platform>unix</platform>
+									</platforms>
+								</program>
+							</programs>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>assemble</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>rpm-maven-plugin</artifactId>
+						<inherited>false</inherited>
+						<executions>
+							<!-- ========================================================== -->
+							<!-- = The execution to create the PRM settings Production = -->
+							<!-- ========================================================== -->
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>rpm</goal>
+								</goals>
+								<configuration>
+									<name>hello-world</name>
+									<copyright>SALTO Consulting</copyright>
+									<distribution>SALTO Consulting</distribution>
+									<group>Applications/Programming</group>
+									<packager>Quentin Vandekerckhove</packager>
+									<needarch>false</needarch>
+									<requires>
+										<require><![CDATA[ java >= 1.7.0 ]]></require>
+									</requires>
+									<preinstallScriptlet>
+										<script>
+											<![CDATA[
+if ! id -u ${app.usr} > /dev/null 2>&1
+then
+		useradd ${app.usr}
+		echo ${app.usr} | passwd --stdin ${app.usr}
+fi
+											]]>
+										</script>
+									</preinstallScriptlet>
+									<mappings>
+										<mapping>
+											<directory>${app.install.dir}</directory>
+											<filemode>700</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+										</mapping>
+										<mapping>
+											<directory>${app.config.dir}</directory>
+											<filemode>600</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+											<configuration>true</configuration>
+											<sources>
+												<source>
+													<location>${appassembler.output.dir}/config</location>
+												</source>
+											</sources>
+										</mapping>
+										<mapping>
+											<directory>${app.config.dir}</directory>
+											<filemode>700</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+										</mapping>
+										<mapping>
+											<directory>${app.bin.dir}</directory>
+											<filemode>500</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+											<sources>
+												<source>
+													<location>${appassembler.output.dir}/bin</location>
+												</source>
+											</sources>
+										</mapping>
+										<mapping>
+											<directory>/usr/bin</directory>
+											<filemode>755</filemode>
+											<username>root</username>
+											<groupname>root</groupname>
+											<sources>
+												<softlinkSource>
+													<location>${app.bin.dir}/${app.name}</location>
+												</softlinkSource>
+											</sources>
+										</mapping>
+										<mapping>
+											<directory>${app.lib.dir}</directory>
+											<filemode>644</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+											<artifact />
+											<dependency />
+										</mapping>
+										<mapping>
+											<directory>${app.lib.dir}</directory>
+											<filemode>755</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+										</mapping>
+										<mapping>
+											<directory>${app.log.dir}</directory>
+											<filemode>755</filemode>
+											<username>${app.usr}</username>
+											<groupname>${app.grp}</groupname>
+										</mapping>
+									</mappings>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
