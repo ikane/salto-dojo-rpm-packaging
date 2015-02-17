@@ -1,2 +1,62 @@
-# salto-dojo-rpm-packaging
-Sample code for the Salto Dojo 3
+= Packager une application avec rpm
+:revnumber: {revnumber}
+:revdate: {docTimestamp}
+:experimental:
+:data-uri:
+:allow-uri-read:
+:description: Packager une application avec rpm
+:imagesdir: docs/images
+:source-highlighter: highlightjs
+//:source-highlighter: prettify
+:toc: right
+:toclevels: 4
+:icons: font
+// Variables
+:doc: http://mojo.codehaus.org/rpm-maven-plugin
+:repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
+
+== Pré-requis
+
+Les outils suivants seront nécessaires :
+
+ - une machine unix
+ - rpm: pour construire les rpms sur son poste
+ - docker: pour ceux qui ne sont pas sous un OS avec rpm native pour tester nos rpms
+ - maven 3.0.4+
+ - maven-rpm-plugin
+
+
+.Dockerfile
+----
+FROM centos:centos6
+RUN yum -y upgrade && yum clean all
+RUN yum -y install java-1.7.0-openjdk && yum clean all
+RUN yum -y install tomcat6 && yum clean all
+ADD http://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war /var/lib/tomcat6/webapps/
+RUN chown tomcat:tomcat /var/lib/tomcat6/webapps/sample.war
+EXPOSE 8080
+CMD service tomcat6 start 
+----
+
+Construction de l'image
+----
+sudo docker build -t tomcat6-centos6 .
+----
+
+Démarrer la VM
+----
+sudo docker run -i -t -p 8080:8080 tomcat6-centos6 /bin/bash
+sudo docker run -i -t -v /home/quentin/Documents/workspaces/demo-packaging/demo-rpm/classic-application/target/rpm/hello-word/RPMS/noarch/hello-word-0.0.1-SNAPSHOT20150217003241.noarch.rpm:/hello-word-0.0.1-SNAPSHOT20150217003241.noarch.rpm:ro -p 8080:8080 tomcat6-centos6 /bin/bash
+----
+
+
+
+
+== Déployer une application en ligne de commande
+
+== Déployer un batch
+
+== Déployer un démon Unix
+
+== Déployer une application web
+
