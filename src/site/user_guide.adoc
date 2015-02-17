@@ -50,7 +50,7 @@ sudo docker run -i -t -v /home/quentin/Documents/workspaces/demo-packaging/demo-
 ----
 
 
-
+docker run -i -t -v /tmp/rpm:/rpm:ro -p 8080:8080 tomcat6-centos6 /bin/bash
 
 == Déployer une application en ligne de commande
 
