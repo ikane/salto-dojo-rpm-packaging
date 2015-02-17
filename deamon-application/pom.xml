@@ -84,7 +84,7 @@
 								<extraArguments>
 									<extraArgument>-server</extraArgument>
 									<extraArgument>-XX:+HeapDumpOnOutOfMemoryError</extraArgument>
-									<extraArgument>-XX:HeapDumpPath=${daemon.log.dir}</extraArgument>
+									<extraArgument>-XX:HeapDumpPath=${app.log.dir}</extraArgument>
 								</extraArguments>
 							</defaultJvmSettings>
 
