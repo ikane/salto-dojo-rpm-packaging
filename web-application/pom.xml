@@ -1,11 +1,157 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.saltoconsulting.dojo</groupId>
-    <artifactId>salto-dojo-rpm-packaging</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>web-application</artifactId>
-  <name>web-application</name>
-  <description>Exemple de packaging pour une application Web</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.saltoconsulting.dojo</groupId>
+		<artifactId>salto-dojo-rpm-packaging</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>web-application</artifactId>
+	<name>web-application</name>
+	<packaging>war</packaging>
+	<description>Exemple de packaging pour une application Web</description>
+
+	<properties>
+		<app.name>hello-webapp</app.name>
+		<app.install.dir>${prefix.dir}/web</app.install.dir>
+		<app.config.dir>/etc/hello-webapp</app.config.dir>
+		<tomcat.deploy.dir>/var/lib/tomcat6/webapps/</tomcat.deploy.dir>
+	</properties>
+
+	<build>
+		<finalName>${app.name}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<warName>${project.build.finalName}</warName>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>rpm</id>
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>rpm-maven-plugin</artifactId>
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>rpm</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<name>hello-world-webapp</name>
+							<copyright>SALTO Consulting</copyright>
+							<distribution>SALTO Consulting</distribution>
+							<group>Applications/Programming</group>
+							<packager>Quentin Vandekerckhove</packager>
+							<!-- do not use x86_64 if your JVM is a 32 bits version -->
+							<needarch>noarch</needarch>
+							<requires>
+								<require><![CDATA[ java >= 1.7.0 ]]></require>
+								<require><![CDATA[ tomcat6 ]]></require>
+							</requires>
+							<preinstallScriptlet>
+								<script>
+									<![CDATA[
+if ! id -u ${app.usr} > /dev/null 2>&1
+then
+		useradd ${app.usr}
+		echo ${app.usr} | passwd --stdin ${app.usr}
+fi
+									]]>
+								</script>
+							</preinstallScriptlet>
+							<postinstallScriptlet>
+								<script>
+									<![CDATA[
+service tomcat6 restart
+									]]>
+								</script>
+							</postinstallScriptlet>
+							<mappings>
+								<mapping>
+									<directory>${app.config.dir}</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>640</filemode>
+									<sources>
+										<source>
+											<location>src/main/config</location>
+										</source>
+										<source>
+											<location>src/main/config</location>
+										</source>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>${app.config.dir}</directory>
+									<username>${app.usr}</username>
+									<groupname>${app.grp}</groupname>
+									<filemode>750</filemode>
+								</mapping>
+								<mapping>
+									<directory>${tomcat.deploy.dir}</directory>
+									<username>tomcat</username>
+									<groupname>tomcat</groupname>
+									<filemode>600</filemode>
+									<artifact />
+								</mapping>
+							</mappings>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

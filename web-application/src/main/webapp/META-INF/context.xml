@@ -1,0 +1,3 @@
+<Context>
+	<Environment name="spring.config.location" value="file:/etc/hello-webapp/application.yml" type="java.lang.String" />
+</Context>

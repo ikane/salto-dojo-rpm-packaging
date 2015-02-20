@@ -15,6 +15,8 @@
 :doc: http://mojo.codehaus.org/rpm-maven-plugin
 :repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
+[![Build Status](https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/status.png)](https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest)
+
 == Pré-requis
 
 Les outils suivants seront nécessaires :
@@ -38,15 +40,16 @@ EXPOSE 8080
 CMD service tomcat6 start 
 ----
 
-Construction de l'image
+.Construction de l'image
 ----
-sudo docker build -t tomcat6-centos6 .
+docker build -t qvdk/tomcat6-centos6 .
 ----
 
-Démarrer la VM
+.Démarrer la VM
 ----
 sudo docker run -i -t -p 8080:8080 tomcat6-centos6 /bin/bash
 sudo docker run -i -t -v /home/quentin/Documents/workspaces/demo-packaging/demo-rpm/classic-application/target/rpm/hello-word/RPMS/noarch/hello-word-0.0.1-SNAPSHOT20150217003241.noarch.rpm:/hello-word-0.0.1-SNAPSHOT20150217003241.noarch.rpm:ro -p 8080:8080 tomcat6-centos6 /bin/bash
+docker run -i -t -v /tmp/rpm:/rpm:ro -p 8080:8080  qvdk/tomcat6-centos6 /bin/bash
 ----
 
 
