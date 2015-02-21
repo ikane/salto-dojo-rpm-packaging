@@ -8,3 +8,5 @@ spring:
  main:
   show_banner: false
  output.ansi.enabled: ALWAYS
+
+#who: Salto

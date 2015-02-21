@@ -15,14 +15,8 @@ public class HelloWorldController {
 
 	@RequestMapping("/")
 	public String welcome(
-			@RequestParam(defaultValue = "man", required = false, value = "who") String who) {
+			@RequestParam(required = false, value = "who") String who) {
 		return this.helloWorldService.hello(who);
 	}
 	
-	@RequestMapping("/hello")
-	public String helloWorld(
-			@RequestParam(defaultValue = "World", required = false, value = "who") String who) {
-		return this.helloWorldService.hello(who);
-	}
-
 }

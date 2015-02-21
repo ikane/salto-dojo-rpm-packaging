@@ -4,7 +4,7 @@
 :experimental:
 :data-uri:
 :allow-uri-read:
-:description: Packager une application avec rpm
+:description: Packaging d'applications Java avec RPM
 :imagesdir: docs/images
 :source-highlighter: highlightjs
 //:source-highlighter: prettify
@@ -16,6 +16,17 @@
 :repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
 [![Build Status](https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/status.png)](https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest)
+
+
+== Pourquoi packager son application ?
+
+ - Automatiser l'installation d'une application et sa configuration
+ - Faciliter la maintenance et les changements de version
+ - S'intégrer au repository `yum` d'une entreprise
+
+
+
+
 
 == Pré-requis
 
