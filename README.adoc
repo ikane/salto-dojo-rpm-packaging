@@ -1,4 +1,4 @@
-= Packager une application avec rpm
+= Packager une application avec rpm image:https://build.spring.io/plugins/servlet/buildStatusImage/BOOT-PUB["Build Status", link="https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest"] 
 :revnumber: {revnumber}
 :revdate: {docTimestamp}
 :experimental:
@@ -15,7 +15,9 @@
 :doc: http://mojo.codehaus.org/rpm-maven-plugin
 :repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
-[![Build Status](https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/status.png)](https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest)
+
+
+
 
 
 == Pourquoi packager son application ?
