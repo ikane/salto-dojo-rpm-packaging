@@ -107,8 +107,8 @@
 							<!-- do not use x86_64 if your JVM is a 32 bits version -->
 							<needarch>noarch</needarch>
 							<requires>
-								<require><![CDATA[ java >= 1.8.0 ]]></require>
-								<require><![CDATA[ tomcat >= 8.0.18 ]]></require>
+								<require><![CDATA[ java >= 1.8 ]]></require>
+								<require><![CDATA[ tomcat >= 8 ]]></require>
 							</requires>
 							<preinstallScriptlet>
 								<script>
