@@ -16,9 +16,12 @@
 :doc: http://mojo.codehaus.org/rpm-maven-plugin
 :repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
+[cols="2*"]
+|===
+| Présentation des concepts
+| image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[caption="> ", title="Slideshow", link="http://slides.com/qvdk/java-rpm-packaging"]
 
-image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[caption="> ", title="Slideshow", link="http://slides.com/qvdk/java-rpm-packaging"]
-
+|===
 
 
 == Pourquoi packager son application ?
