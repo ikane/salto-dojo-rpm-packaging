@@ -17,8 +17,8 @@
 
 
 
-image:https://travis-ci.org/qvdk/salto-dojo-rpm-packaging.svg?branch=master["Build Status", link="https://travis-ci.org/qvdk/salto-dojo-rpm-packaging"]
-image:https://build.spring.io/plugins/servlet/buildStatusImage/BOOT-PUB["Build Status", link="https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest"] 
+travis image:https://travis-ci.org/qvdk/salto-dojo-rpm-packaging.svg?branch=master["Build Status", link="https://travis-ci.org/qvdk/salto-dojo-rpm-packaging"]
+drone  image:https://build.spring.io/plugins/servlet/buildStatusImage/BOOT-PUB["Build Status", link="https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest"] 
 
 
 == Pourquoi packager son application ?
