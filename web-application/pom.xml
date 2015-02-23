@@ -125,6 +125,8 @@ fi
 							<mappings>
 								<mapping>
 									<directory>${app.config.dir}</directory>
+									<directoryIncluded>false</directoryIncluded>
+									<configuration>true</configuration>
 									<username>${app.usr}</username>
 									<groupname>${app.grp}</groupname>
 									<filemode>640</filemode>
