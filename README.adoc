@@ -1,83 +1,8 @@
 = Automatiser le déploiement des applications Java avec RPM image:https://travis-ci.org/qvdk/salto-dojo-rpm-packaging.svg?branch=master["Build Status", link="https://travis-ci.org/qvdk/salto-dojo-rpm-packaging"]
 // drone  image:https://build.spring.io/plugins/servlet/buildStatusImage/BOOT-PUB["Build Status", link="https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest"] 
-:revnumber: {revnumber}
-:revdate: {docTimestamp}
-:experimental:
-:data-uri:
-:allow-uri-read:
-:description: Packaging d'applications Java avec RPM
-:imagesdir: docs/images
-:source-highlighter: highlightjs
-//:source-highlighter: prettify
-:toc: right
-:toclevels: 4
-:icons: font
-// Variables
-:doc: http://mojo.codehaus.org/rpm-maven-plugin
-:repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
-
-.Présentation 
 ****
 image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[link="http://slides.com/qvdk/java-rpm-packaging"]
 ****
 
 '''
-
-
-== Pourquoi packager son application ?
-
- - Automatiser l'installation d'une application et sa configuration
- - Faciliter la maintenance et les changements de version
- - S'intégrer au repository `yum` d'une entreprise
-
-
-
-
-
-== Pré-requis
-
-Les outils suivants seront nécessaires :
-
- - une machine unix
- - rpm: pour construire les rpms sur son poste
- - docker: pour ceux qui ne sont pas sous un OS avec rpm native pour tester nos rpms
- - maven 3.0.4+
- - maven-rpm-plugin
-
-
-.Dockerfile
-----
-FROM centos:centos6
-RUN yum -y upgrade && yum clean all
-RUN yum -y install java-1.7.0-openjdk && yum clean all
-RUN yum -y install tomcat6 && yum clean all
-ADD http://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war /var/lib/tomcat6/webapps/
-RUN chown tomcat:tomcat /var/lib/tomcat6/webapps/sample.war
-EXPOSE 8080
-CMD service tomcat6 start 
-----
-
-.Construction de l'image
-----
-docker build -t qvdk/tomcat6-centos6 .
-----
-
-.Démarrer la VM
-----
-sudo docker run -i -t -p 8080:8080 tomcat6-centos6 /bin/bash
-sudo docker run -i -t -v /home/quentin/Documents/workspaces/demo-packaging/demo-rpm/classic-application/target/rpm/hello-word/RPMS/noarch/hello-word-0.0.1-SNAPSHOT20150217003241.noarch.rpm:/hello-word-0.0.1-SNAPSHOT20150217003241.noarch.rpm:ro -p 8080:8080 tomcat6-centos6 /bin/bash
-docker run -i -t -v /tmp/rpm:/rpm:ro -p 8080:8080  qvdk/tomcat6-centos6 /bin/bash
-----
-
-
-
-
-== Déployer une application en ligne de commande
-
-== Déployer un batch
-
-== Déployer un démon Unix
-
-== Déployer une application web
-
