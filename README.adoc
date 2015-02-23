@@ -1,4 +1,4 @@
-= Packager une application avec rpm image:https://travis-ci.org/qvdk/salto-dojo-rpm-packaging.svg?branch=master["Build Status", link="https://travis-ci.org/qvdk/salto-dojo-rpm-packaging"]
+= Automatiser le déploiement des applications Java avec RPM image:https://travis-ci.org/qvdk/salto-dojo-rpm-packaging.svg?branch=master["Build Status", link="https://travis-ci.org/qvdk/salto-dojo-rpm-packaging"]
 // drone  image:https://build.spring.io/plugins/servlet/buildStatusImage/BOOT-PUB["Build Status", link="https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest"] 
 :revnumber: {revnumber}
 :revdate: {docTimestamp}
@@ -16,12 +16,13 @@
 :doc: http://mojo.codehaus.org/rpm-maven-plugin
 :repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
-[cols="2,a",width="100"]
-|===
-| Présentation 
-| image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[link="http://slides.com/qvdk/java-rpm-packaging"]
 
-|===
+.Présentation 
+****
+image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[link="http://slides.com/qvdk/java-rpm-packaging"]
+****
+
+'''
 
 
 == Pourquoi packager son application ?
