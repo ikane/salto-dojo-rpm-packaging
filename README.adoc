@@ -17,6 +17,8 @@
 :repository: https://github.com/qvdk/salto-dojo-rpm-packaging.git
 
 
+image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[caption=">", title="Slideshow", link="http://slides.com/qvdk/java-rpm-packaging"]
+
 
 
 == Pourquoi packager son application ?
