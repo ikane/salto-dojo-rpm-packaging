@@ -14,6 +14,7 @@
 		<app.name>hello</app.name>
 		<app.install.dir>${prefix.dir}/app</app.install.dir>
 		<app.config.dir>${app.install.dir}/config</app.config.dir>
+		<app.config.dir.ext>/etc/hello-world</app.config.dir.ext>
 		<app.bin.dir>${app.install.dir}/bin</app.bin.dir>
 		<app.log.dir>${app.install.dir}/logs</app.log.dir>
 		<app.lib.dir>${app.install.dir}/lib</app.lib.dir>
@@ -23,6 +24,11 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/config</directory>
+				<targetPath>config</targetPath>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -69,7 +75,7 @@
 									<id>${app.name}</id>
 									<mainClass>com.saltoconsulting.dojo.app.HelloWorldApplication</mainClass>
 									<commandLineArguments>
-										<commandLineArgument>--spring.config.location=file:${app.config.dir}</commandLineArgument>
+										<commandLineArgument>--spring.config.location=file:${app.config.dir.ext}/</commandLineArgument>
 									</commandLineArguments>
 
 									<!-- Only generate unix shell script for this application -->
@@ -93,9 +99,6 @@
 						<artifactId>rpm-maven-plugin</artifactId>
 						<inherited>false</inherited>
 						<executions>
-							<!-- ========================================================== -->
-							<!-- = The execution to create the PRM settings Production = -->
-							<!-- ========================================================== -->
 							<execution>
 								<phase>package</phase>
 								<goals>
@@ -110,7 +113,9 @@
 									<needarch>false</needarch>
 									<requires>
 										<require><![CDATA[ java >= 1.7.0 ]]></require>
+										<require><![CDATA[ hello-world-config >= 0.0.1 ]]></require>
 									</requires>
+									<changelogFile>src/main/rpm/changelogs</changelogFile>
 									<preinstallScriptlet>
 										<script>
 											<![CDATA[
@@ -129,6 +134,7 @@ fi
 											<username>${app.usr}</username>
 											<groupname>${app.grp}</groupname>
 										</mapping>
+										<!-- 
 										<mapping>
 											<directory>${app.config.dir}</directory>
 											<filemode>600</filemode>
@@ -147,6 +153,7 @@ fi
 											<username>${app.usr}</username>
 											<groupname>${app.grp}</groupname>
 										</mapping>
+										 -->
 										<mapping>
 											<directory>${app.bin.dir}</directory>
 											<filemode>500</filemode>

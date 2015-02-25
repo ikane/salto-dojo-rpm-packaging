@@ -6,3 +6,5 @@ image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/sli
 ****
 
 '''
+
+// https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-rpm-using.html
