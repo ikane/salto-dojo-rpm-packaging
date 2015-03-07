@@ -12,6 +12,8 @@
 		<module>batch-application</module>
 		<module>deamon-application</module>
 		<module>web-application</module>
+		<module>customer-service</module>
+		<module>database-management</module>
 	</modules>
 
 	<properties>
@@ -21,7 +23,7 @@
 		<app.usr>salto</app.usr>
 		<app.grp>${app.usr}</app.grp>
 		<prefix.dir>/opt/hello</prefix.dir>
-		<spring-boot.version>1.2.1.RELEASE</spring-boot.version>
+		<spring-boot.version>1.2.2.RELEASE</spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
@@ -32,6 +34,21 @@
 				<version>${spring-boot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>2.3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>1.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.dozer</groupId>
+				<artifactId>dozer</artifactId>
+				<version>5.5.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

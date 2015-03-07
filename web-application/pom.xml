@@ -29,10 +29,6 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>true</filtering>
-			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -41,9 +37,14 @@
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<warName>${project.build.finalName}</warName>
-			        <webResources>
+					<webResources>
 						<resource>
 							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+						</resource>
+						<resource>
+							<directory>src/main/config</directory>
+							<targetPath>config</targetPath>
 							<filtering>true</filtering>
 						</resource>
 					</webResources>
@@ -78,6 +79,28 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.saltoconsulting.dojo.customer</groupId>
+			<artifactId>customer-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
+			<version>2.1.5</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -99,7 +122,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<name>hello-world-webapp</name>
+							<name>web-application</name>
 							<copyright>SALTO Consulting</copyright>
 							<distribution>SALTO Consulting</distribution>
 							<group>Applications/Programming</group>
@@ -109,42 +132,25 @@
 							<requires>
 								<require><![CDATA[ java >= 1.8 ]]></require>
 								<require><![CDATA[ tomcat >= 8 ]]></require>
+								<require><![CDATA[ web-application-config >= 0.0.1 ]]></require>
 							</requires>
 							<preinstallScriptlet>
 								<script>
 									<![CDATA[
+${tomcat.stop.cmd} &> /dev/null
 if ! id -u ${app.usr} > /dev/null 2>&1
 then
 		useradd --groups tomcat ${app.usr}
-		echo ${app.usr} | passwd --stdin ${app.usr}
 fi
-
 									]]>
 								</script>
 							</preinstallScriptlet>
+							<postinstallScriptlet>
+								<script>
+									<![CDATA[ ${tomcat.start.cmd} ]]>
+								</script>
+							</postinstallScriptlet>
 							<mappings>
-								<mapping>
-									<directory>${app.config.dir}</directory>
-									<directoryIncluded>false</directoryIncluded>
-									<configuration>true</configuration>
-									<username>${app.usr}</username>
-									<groupname>${app.grp}</groupname>
-									<filemode>640</filemode>
-									<sources>
-										<source>
-											<location>src/main/config</location>
-										</source>
-										<source>
-											<location>src/main/config</location>
-										</source>
-									</sources>
-								</mapping>
-								<mapping>
-									<directory>${app.config.dir}</directory>
-									<username>${app.usr}</username>
-									<groupname>${app.grp}</groupname>
-									<filemode>750</filemode>
-								</mapping>
 								<mapping>
 									<directory>${tomcat.deploy.dir}</directory>
 									<directoryIncluded>false</directoryIncluded>

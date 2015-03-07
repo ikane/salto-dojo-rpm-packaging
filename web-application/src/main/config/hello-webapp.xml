@@ -1,0 +1,8 @@
+<Context reloadable="true">
+	<Environment name="spring.config.location" value="file:/etc/web-application/"
+		type="java.lang.String" override="false" />
+	<Resource name="jdbc/customerdb" auth="Container" type="javax.sql.DataSource"
+		driverClassName="org.hsqldb.jdbcDriver" url="__DATABASE_JDBC_URL__"
+		username="__DATABASE_JDBC_USER__" password="__DATABASE_JDBC_PASSWORD__"
+		maxActive="1" minIdle="1" initialSize="1" />
+</Context>

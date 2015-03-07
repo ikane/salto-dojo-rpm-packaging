@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<property name="csvLocation" value="com/saltoconsulting/dojo/db/data" />
+
+	<changeSet id="customer-type-table" author="qvandekerckhove">
+		<createTable tableName="CUSTOMER_TYPE">
+			<column name="ID" type="INTEGER">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="NAME" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="customer-table" author="qvandekerckhove">
+		<createTable tableName="CUSTOMER">
+			<column name="ID" type="INTEGER">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="NAME" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="FIRST_NAME" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="FK_CUSTOMER_TYPE_ID" type="INTEGER">
+				<constraints foreignKeyName="fk_customer_customertype" references="CUSTOMER_TYPE(ID)" nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="customer-sequence" author="qvandekerckhove">
+		<createSequence sequenceName="CUSTOMER_SEQ" startValue="1"/>
+	</changeSet>
+
+	<changeSet id="customer-type-data" author="qvandekerckhove"  runOnChange="true">
+		<loadUpdateData encoding="UTF-8"
+			file="${csvLocation}/customer_type.csv" primaryKey="id" tableName="CUSTOMER_TYPE">
+			<column name="ID" type="NUMERIC" />
+			<column name="NAME" type="STRING" />
+		</loadUpdateData>
+	</changeSet>
+
+</databaseChangeLog>

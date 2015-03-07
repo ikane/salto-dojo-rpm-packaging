@@ -9,4 +9,21 @@ spring:
   show_banner: false
  output.ansi.enabled: ALWAYS
 
-#who: Salto
+ datasource:
+#  jndi-name: jdbc/customerdb
+  url: jdbc:hsqldb:hsql://localhost/firstdb
+  username: sa
+  password:
+  driver-class-name: org.hsqldb.jdbcDriver
+
+ jpa:
+  show-sql: true
+  hibernate.ddl-auto: none
+
+who: Quentin
+
+server:
+ port: 9000
+ 
+#liquibase:
+# changelog: classpath:/com/saltoconsulting/dojo/db/changelog/db.changelog-master.xml

@@ -3,18 +3,13 @@ logging.level:
  org.springframework.web: INFO
 
 spring:
- application:
-  name: Hello World Webapp
  main:
   show_banner: false
  output.ansi.enabled: ALWAYS
-
- datasource:
-  jndi-name: jdbc/customerdb
 
  jpa:
   show-sql: true
   hibernate.ddl-auto: none
 
-who: __ENVIRONMENT__
-
+liquibase:
+ changeLog: classpath:/com/saltoconsulting/dojo/db/changelog/db.changelog-master.xml

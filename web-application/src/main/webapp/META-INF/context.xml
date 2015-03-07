@@ -1,3 +1,0 @@
-<Context>
-	<Environment name="spring.config.location" value="file:${app.config.dir}/" type="java.lang.String" override="false"/>
-</Context>

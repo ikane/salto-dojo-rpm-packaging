@@ -6,25 +6,40 @@
 		<artifactId>salto-dojo-rpm-packaging</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>classic-application</artifactId>
-	<name>classic-application</name>
-	<description>Exemple d'une application java classique</description>
+	<artifactId>database-management</artifactId>
+	<packaging>jar</packaging>
+	<name>customer-database-management</name>
+	<description>Manage database updates.</description>
 
 	<properties>
-		<app.name>hello</app.name>
-		<app.install.dir>${prefix.dir}/app</app.install.dir>
-		<app.config.dir.ext>/etc/hello-world</app.config.dir.ext>
+		<app.name>update-customer-db</app.name>
+		<app.install.dir>${prefix.dir}/database</app.install.dir>
+		<app.config.dir>/etc/database-management</app.config.dir>
 		<app.bin.dir>${app.install.dir}/bin</app.bin.dir>
-		<app.log.dir>${app.install.dir}/logs</app.log.dir>
 		<app.lib.dir>${app.install.dir}/lib</app.lib.dir>
+		<app.log.dir>/var/log/${app.name}</app.log.dir>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.saltoconsulting.dojo.customer</groupId>
+			<artifactId>customer-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
 			<resource>
 				<directory>src/main/config</directory>
 				<targetPath>config</targetPath>
@@ -33,63 +48,25 @@
 		</resources>
 	</build>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-	</dependencies>
-
 	<profiles>
 		<profile>
 			<id>rpm</id>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>appassembler-maven-plugin</artifactId>
-						<configuration>
-							<!-- Set the target configuration directory to be used in the bin 
-								scripts -->
-							<configurationDirectory>config</configurationDirectory>
-							<!-- Copy the contents from "/src/main/config" to the target configuration 
-								directory in the assembled application -->
-							<copyConfigurationDirectory>true</copyConfigurationDirectory>
-							<!-- Include the target configuration directory in the beginning of 
-								the classpath declaration in the bin scripts -->
-							<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-							<!-- set alternative assemble directory -->
-							<assembleDirectory>${appassembler.output.dir}</assembleDirectory>
-							<!-- Extra JVM arguments that will be included in the bin scripts -->
-							<extraJvmArguments>-Xmx128m</extraJvmArguments>
-							<repositoryName>lib</repositoryName>
-							<repositoryLayout>flat</repositoryLayout>
-
-							<!-- Generate bin scripts for windows and unix pr default -->
-							<platforms>
-								<platform>unix</platform>
-							</platforms>
-							<programs>
-								<program>
-									<id>${app.name}</id>
-									<mainClass>com.saltoconsulting.dojo.app.HelloWorldApplication</mainClass>
-									<commandLineArguments>
-										<commandLineArgument>--spring.config.location=file:${app.config.dir.ext}/</commandLineArgument>
-									</commandLineArguments>
-
-									<!-- Only generate unix shell script for this application -->
-									<platforms>
-										<platform>unix</platform>
-									</platforms>
-								</program>
-							</programs>
-						</configuration>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>package</phase>
+								<id>build-classpath</id>
+								<phase>generate-sources</phase>
 								<goals>
-									<goal>assemble</goal>
+									<goal>build-classpath</goal>
 								</goals>
+								<configuration>
+									<outputProperty>liquibase.classpath</outputProperty>
+									<prefix>${app.install.dir}/lib</prefix>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -104,28 +81,34 @@
 									<goal>rpm</goal>
 								</goals>
 								<configuration>
-									<name>hello-world</name>
+									<name>database-management</name>
 									<copyright>SALTO Consulting</copyright>
 									<distribution>SALTO Consulting</distribution>
 									<group>Applications/Programming</group>
 									<packager>Quentin Vandekerckhove</packager>
 									<needarch>false</needarch>
+									<prefix>${prefix.dir}</prefix>
 									<requires>
+										<require><![CDATA[ hsqldb >= 2.3.0 ]]></require>
 										<require><![CDATA[ java >= 1.7.0 ]]></require>
-										<require><![CDATA[ hello-world-config >= 0.0.1 ]]></require>
+										<require><![CDATA[ liquibase >= 3.1 ]]></require>
+										<require><![CDATA[ database-management-config >= 0.0.1 ]]></require>
 									</requires>
-									<changelogFile>src/main/rpm/changelogs</changelogFile>
 									<preinstallScriptlet>
 										<script>
 											<![CDATA[
 if ! id -u ${app.usr} > /dev/null 2>&1
 then
 		useradd ${app.usr}
-
 fi
 											]]>
 										</script>
 									</preinstallScriptlet>
+									<postinstallScriptlet>
+										<script>
+											<![CDATA[/opt/hello/database/bin/update-customer-db]]>
+										</script>
+									</postinstallScriptlet>
 									<mappings>
 										<mapping>
 											<directory>${app.install.dir}</directory>
@@ -140,7 +123,8 @@ fi
 											<groupname>${app.grp}</groupname>
 											<sources>
 												<source>
-													<location>${appassembler.output.dir}/bin</location>
+													<location>src/main/bin</location>
+													<filter>true</filter>
 												</source>
 											</sources>
 										</mapping>

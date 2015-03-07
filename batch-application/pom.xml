@@ -121,7 +121,7 @@
 if ! id -u ${app.usr} > /dev/null 2>&1
 then
 		useradd ${app.usr}
-		echo ${app.usr} | passwd --stdin ${app.usr}
+
 fi
 											]]>
 										</script>
