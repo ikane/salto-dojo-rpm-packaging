@@ -1,21 +1,25 @@
 = Automate the deployment of Java applications with RPM image:https://travis-ci.org/qvdk/salto-dojo-rpm-packaging.svg?branch=master["Build Status", link="https://travis-ci.org/qvdk/salto-dojo-rpm-packaging"]
 // drone  image:https://build.spring.io/plugins/servlet/buildStatusImage/BOOT-PUB["Build Status", link="https://drone.io/github.com/qvdk/salto-dojo-rpm-packaging/latest"] 
 
-****
-image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[link="http://slides.com/qvdk/java-rpm-packaging"]
-****
-
-'''
-
 // https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-rpm-using.html
 
 This project suggests how to package different Java programs :
 
  - a classic app hosted in a jar file
  - a daemon app which requires dependencies and some libraries specifics of an architecture.
- - a batch app similare to the classic app but which illustrate the externalization of configurations related to an environment
- - a web app hosted by Tomcat requiring the setup of a datasource with externalized configurations related to an environment
+ - a batch app similare to the classic app but which illustrate the externalization of configurations
+ related to an environment
+ - a web app hosted by Tomcat requiring the setup of a datasource with externalized configurations 
+ related to an environment
+ - an automation of the updates of a database by installing an rpm package.
+
+This examples are an illustration on how to package Java apps introduce by the following link:http://slides.com/qvdk/java-rpm-packaging[slides^].
 
 
+****
+image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/slideshow_thumbnail.jpg?raw=true[link="http://slides.com/qvdk/java-rpm-packaging"]
+****
+
+'''
 
 
