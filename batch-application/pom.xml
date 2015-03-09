@@ -106,7 +106,7 @@
 									<goal>rpm</goal>
 								</goals>
 								<configuration>
-									<name>hello-world-batch</name>
+									<name>batch-app</name>
 									<copyright>SALTO Consulting</copyright>
 									<distribution>SALTO Consulting</distribution>
 									<group>Applications/Programming</group>

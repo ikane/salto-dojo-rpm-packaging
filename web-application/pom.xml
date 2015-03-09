@@ -122,7 +122,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<name>web-application</name>
+							<name>web-app</name>
 							<copyright>SALTO Consulting</copyright>
 							<distribution>SALTO Consulting</distribution>
 							<group>Applications/Programming</group>
@@ -132,7 +132,7 @@
 							<requires>
 								<require><![CDATA[ java >= 1.8 ]]></require>
 								<require><![CDATA[ tomcat >= 8 ]]></require>
-								<require><![CDATA[ web-application-config >= 0.0.1 ]]></require>
+								<require><![CDATA[ web-app-config >= 0.0.1 ]]></require>
 							</requires>
 							<preinstallScriptlet>
 								<script>

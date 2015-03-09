@@ -104,7 +104,7 @@
 									<goal>rpm</goal>
 								</goals>
 								<configuration>
-									<name>hello-world</name>
+									<name>classic-app</name>
 									<copyright>SALTO Consulting</copyright>
 									<distribution>SALTO Consulting</distribution>
 									<group>Applications/Programming</group>
@@ -112,7 +112,7 @@
 									<needarch>false</needarch>
 									<requires>
 										<require><![CDATA[ java >= 1.7.0 ]]></require>
-										<require><![CDATA[ hello-world-config >= 0.0.1 ]]></require>
+										<require><![CDATA[ classic-app-config >= 0.0.1 ]]></require>
 									</requires>
 									<changelogFile>src/main/rpm/changelogs</changelogFile>
 									<preinstallScriptlet>

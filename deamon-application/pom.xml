@@ -163,7 +163,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<name>hello-world-daemon</name>
+							<name>daemon-app</name>
 							<copyright>SALTO Consulting</copyright>
 							<distribution>SALTO Consulting</distribution>
 							<group>Applications/Programming</group>
@@ -176,14 +176,18 @@
 							<preinstallScriptlet>
 								<script>
 									<![CDATA[
-if ! id -u ${app.usr} > /dev/null 2>&1
-then
-		useradd ${app.usr}
-
-fi
+[ ! id -u ${app.usr} &> /dev/null ] && useradd ${app.usr}
+[ -f /etc/init.d/hello-daemon ] && /etc/init.d/hello-daemon status &> /dev/null && /etc/init.d/hello-daemon stop
 									]]>
 								</script>
 							</preinstallScriptlet>
+							<postinstallScriptlet>
+								<script>
+									<![CDATA[
+/etc/init.d/hello-daemon start
+									]]>
+								</script>
+							</postinstallScriptlet>
 							<mappings>
 								<mapping>
 									<directory>${app.install.dir}/bin</directory>
