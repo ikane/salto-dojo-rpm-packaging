@@ -13,7 +13,7 @@ This project suggests how to package different Java programs :
  related to an environment
  - an automation of the updates of a database by installing an rpm package.
 
-This examples are an illustration on how to package Java apps introduce by the following link:http://slides.com/qvdk/java-rpm-packaging[slides^].
+This examples are an illustration on how to package Java apps introduced by the following link:http://slides.com/qvdk/java-rpm-packaging[slides^].
 
 
 ****
