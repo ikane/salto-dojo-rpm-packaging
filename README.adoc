@@ -13,7 +13,8 @@ This project suggests how to package different Java programs :
  related to an environment
  - an automation of the updates of a database by installing an rpm package.
 
-This examples are an illustration on how to package Java apps introduced by the following link:http://slides.com/qvdk/java-rpm-packaging[slides^].
+This examples are an illustration on how to package Java apps introduced by the following
+link:http://slides.com/qvdk/java-rpm-packaging[slides^].
 
 
 ****
@@ -22,7 +23,7 @@ image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/sli
 
 '''
 
-A link:https://registry.hub.docker.com/u/qvdk/fedora-tomcat8[docker container] is available to build and test 
+A link:https://registry.hub.docker.com/u/qvdk/fedora-tomcat8[docker container^] is available to build and test 
 this project.
 The container itself was build with this link:https://github.com/qvdk/docker-fedora-tomcat8[`Dockerfile`^].
 
