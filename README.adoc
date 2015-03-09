@@ -22,4 +22,8 @@ image::https://github.com/qvdk/salto-dojo-rpm-packaging/blob/master/includes/sli
 
 '''
 
+A link:https://registry.hub.docker.com/u/qvdk/fedora-tomcat8[docker container] is available to build and test 
+this project.
+The container itself was build with this link:https://github.com/qvdk/docker-fedora-tomcat8[`Dockerfile`^].
+
 
