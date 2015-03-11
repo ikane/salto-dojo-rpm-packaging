@@ -177,7 +177,9 @@
 								<script>
 									<![CDATA[
 [ ! id -u ${app.usr} &> /dev/null ] && useradd ${app.usr}
-[ -f /etc/init.d/hello-daemon ] && /etc/init.d/hello-daemon status &> /dev/null && /etc/init.d/hello-daemon stop
+if [ -f /etc/init.d/hello-daemon ] ; then 
+	/etc/init.d/${app.name} status &> /dev/null && /etc/init.d/${app.name} stop
+fi
 									]]>
 								</script>
 							</preinstallScriptlet>
