@@ -26,4 +26,8 @@ public class CustomerTypeQueryService {
 		return repository.count();
 	}
 	
+	public boolean exist(int id) {
+		return this.findById(id) != null;
+	}
+	
 }

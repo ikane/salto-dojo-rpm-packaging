@@ -19,7 +19,7 @@ import com.saltoconsulting.dojo.customer.service.CustomerQueryService;
 import com.saltoconsulting.dojo.web.json.CustomerJSON;
 
 @RestController
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 @RequestMapping(value = "/customer", produces = { "application/json", "application/xml" })
 public class CustomerController extends BaseRestController {
 

@@ -40,7 +40,7 @@ public class CustomerTypeServiceTest {
 	public void should_add_customer_type() {
 		CustomerType alien = new CustomerType();
 		alien.setId(3);
-		alien.setName("Alien");
+		alien.setLabel("Alien");
 		
 		command.save(alien);
 		
@@ -52,11 +52,11 @@ public class CustomerTypeServiceTest {
 	public void should_update_customer_types() {
 		CustomerType particulier = new CustomerType();
 		particulier.setId(1);
-		particulier.setName("ParticulierUP");
+		particulier.setLabel("ParticulierUP");
 		
 		CustomerType professional = new CustomerType();
 		professional.setId(2);
-		professional.setName("ProfessionnelUP");
+		professional.setLabel("ProfessionnelUP");
 		
 		command.save(particulier, professional);
 		

@@ -42,11 +42,11 @@ public class CustomerTypeControllerTest extends AbstractRestControllerTest {
 		super.setup();
 		type1 = new CustomerType();
 		type1.setId(1);
-		type1.setName("type1");
+		type1.setLabel("type1");
 		
 		type2 = new CustomerType();
 		type2.setId(2);
-		type2.setName("type2");
+		type2.setLabel("type2");
 		
 		customerTypes = Arrays.asList(type1, type2);
 	}
@@ -61,10 +61,10 @@ public class CustomerTypeControllerTest extends AbstractRestControllerTest {
 			.andExpect(jsonPath("$", hasSize(2)))
 			
 			.andExpect(jsonPath("$[0].id", is(1)))
-			.andExpect(jsonPath("$[0].name", is("type1")))
+			.andExpect(jsonPath("$[0].label", is("type1")))
 			
 			.andExpect(jsonPath("$[1].id", is(2)))
-			.andExpect(jsonPath("$[1].name", is("type2")));
+			.andExpect(jsonPath("$[1].label", is("type2")));
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class CustomerTypeControllerTest extends AbstractRestControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id", is(1)))
-			.andExpect(jsonPath("$.name", is("type1")));
+			.andExpect(jsonPath("$.label", is("type1")));
 	}
 
 	@Test

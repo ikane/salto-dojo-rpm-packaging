@@ -13,14 +13,14 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Customer implements Serializable {
 	private static final long serialVersionUID = -7004730395836172475L;
-	
+
 	private Integer id;
 	private String name;
 	private String firstName;
 	private CustomerType type;
-	
+
 	@Id
-	@SequenceGenerator(name="customerSeq", sequenceName="CUSTOMER_SEQ")
+	@SequenceGenerator(name = "customerSeq", sequenceName = "CUSTOMER_SEQ")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customerSeq")
 	public Integer getId() {
 		return id;
@@ -47,7 +47,7 @@ public class Customer implements Serializable {
 	}
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name="FK_CUSTOMER_TYPE_ID")
+	@JoinColumn(name = "FK_CUSTOMER_TYPE_ID", referencedColumnName = "ID")
 	public CustomerType getType() {
 		return type;
 	}

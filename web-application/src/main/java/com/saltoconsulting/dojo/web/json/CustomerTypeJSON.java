@@ -7,7 +7,7 @@ public class CustomerTypeJSON implements Serializable {
 	private static final long serialVersionUID = 4656710135261961334L;
 	
 	private Integer id;
-	private String name;
+	private String label;
 
 	public Integer getId() {
 		return id;
@@ -17,12 +17,12 @@ public class CustomerTypeJSON implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 }

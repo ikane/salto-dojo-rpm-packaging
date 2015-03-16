@@ -3,12 +3,16 @@ package com.saltoconsulting.dojo.customer.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 
 import javax.transaction.Transactional;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -17,9 +21,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.saltoconsulting.dojo.customer.CustomerServiceConfig;
 import com.saltoconsulting.dojo.customer.domain.Customer;
 import com.saltoconsulting.dojo.customer.domain.CustomerType;
-import com.saltoconsulting.dojo.customer.service.CustomerCommandService;
-import com.saltoconsulting.dojo.customer.service.CustomerQueryService;
-import com.saltoconsulting.dojo.customer.service.CustomerTypeCommandService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -37,11 +38,14 @@ public class CustomerServiceTest {
 	
 	protected CustomerType type1;
 	
+	@Rule
+    public ExpectedException thrown= ExpectedException.none();
+	
 	@Before
 	public void setup() {
 		type1 = new CustomerType();
 		type1.setId(1);
-		type1.setName("Particulier");
+		type1.setLabel("Particulier");
 		
 		typeCommand.save(type1);
 	}
@@ -58,10 +62,14 @@ public class CustomerServiceTest {
 		long count = query.countAll();
 		assertEquals(1, count);
 
-		Customer type = query.findById(saved.getId());
-		assertThat(type.getName(), equalTo("Vandekerckhove"));
-		assertThat(type.getFirstName(), equalTo("Quentin"));
+		Customer customer = query.findById(saved.getId());
+		assertThat(customer.getName(), equalTo("Vandekerckhove"));
+		assertThat(customer.getFirstName(), equalTo("Quentin"));
 
+		CustomerType type = customer.getType();
+		assertThat(type, is(notNullValue()));
+		assertThat(type.getId(), equalTo(1));
+		assertThat(type.getLabel(), equalTo("Particulier"));
 	}
 
 	@Test
@@ -97,4 +105,31 @@ public class CustomerServiceTest {
 		command.create(roger);
 	}
 
+	@Test
+	public void should_not_accept_unknown_customer_type() {
+		CustomerType unknownCustomerType = new CustomerType();
+		unknownCustomerType.setId(42);
+		unknownCustomerType.setLabel("Unknown");
+		
+		Customer bishop = new Customer();
+		bishop.setName("Bishop");
+		bishop.setFirstName("Walter");
+		bishop.setType(unknownCustomerType);
+		
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage("does not exist");
+		command.create(bishop);
+	}
+	
+	@Test
+	public void should_not_accept_undefined_customer_type() {
+		Customer bishop = new Customer();
+		bishop.setName("Bishop");
+		bishop.setFirstName("Walter");
+		
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage("is mandatory");
+		command.create(bishop);
+	}
+	
 }

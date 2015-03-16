@@ -11,7 +11,7 @@
 			<column name="ID" type="INTEGER">
 				<constraints primaryKey="true" />
 			</column>
-			<column name="NAME" type="TEXT">
+			<column name="LABEL" type="TEXT">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
@@ -42,7 +42,7 @@
 		<loadUpdateData encoding="UTF-8"
 			file="${csvLocation}/customer_type.csv" primaryKey="id" tableName="CUSTOMER_TYPE">
 			<column name="ID" type="NUMERIC" />
-			<column name="NAME" type="STRING" />
+			<column name="LABEL" type="STRING" />
 		</loadUpdateData>
 	</changeSet>
 

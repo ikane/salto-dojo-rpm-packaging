@@ -11,7 +11,7 @@ public class CustomerType implements Serializable {
 
 	@Id
 	private Integer id;
-	private String name;
+	private String label;
 
 	public Integer getId() {
 		return id;
@@ -21,12 +21,12 @@ public class CustomerType implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class CustomerType implements Serializable {
 			if (!sameId) {
 				return false;
 			}
-			boolean sameName = this.name == type.name || (this.name != null && this.name.equals(type.name));
-			if (!sameName) {
+			boolean sameLabel = this.label == type.label || (this.label != null && this.label.equals(type.label));
+			if (!sameLabel) {
 				return false;
 			}
 			return true;

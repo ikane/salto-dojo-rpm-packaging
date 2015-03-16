@@ -14,8 +14,8 @@ public class CustomerQueryService {
 	@Autowired
 	private CustomerRepository repository;
 
-	public Customer findById(int id) {
-		return repository.findOne(id);
+	public Customer findById(Integer id) {
+		return repository.findById(id);
 	}
 
 	public Iterable<Customer> findAll() {
