@@ -1,0 +1,2 @@
+spring.data.rest.baseUri: /api
+server.port: 9080
