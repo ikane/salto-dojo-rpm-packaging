@@ -14,6 +14,7 @@
 		<module>web-application</module>
 		<module>customer-service</module>
 		<module>database-management</module>
+		<module>spring-boot-sample-data-rest</module>
 	</modules>
 
 	<properties>
