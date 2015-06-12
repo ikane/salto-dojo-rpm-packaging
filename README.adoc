@@ -28,3 +28,6 @@ this project.
 The container itself was build with this link:https://github.com/qvdk/docker-fedora-tomcat8[`Dockerfile`^].
 
 
+.Build package
+[source,bash]
+mvn package -P rpm
